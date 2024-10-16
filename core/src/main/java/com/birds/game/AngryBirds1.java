@@ -2,10 +2,12 @@ package com.birds.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class AngryBirds1 extends Game {
-    public SpriteBatch batch;
+    private SpriteBatch batch;
 
     @Override
     public void create() {
