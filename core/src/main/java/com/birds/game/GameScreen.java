@@ -41,15 +41,15 @@ public class GameScreen implements Screen {
     }
     public void createlevel(int level){
         if(level!=0){
-        bird1 = new Redbird();
-        bird2 = new Bluebird();
-        bird3 = new Bombbird();
-        pig1 = new SmallPig();
-        pig2 = new BigPig();
-        pig3 = new ArmorPig();
-        block1 = new GlassBlock();
-        block2 = new WoodBlock();
-        block3 = new StoneBlock();
+            bird1 = new Redbird();
+            bird2 = new Bluebird();
+            bird3 = new Bombbird();
+            pig1 = new SmallPig();
+            pig2 = new BigPig();
+            pig3 = new ArmorPig();
+            block1 = new GlassBlock();
+            block2 = new WoodBlock();
+            block3 = new StoneBlock();
         }
     }
     public void renderlevel(int level){
@@ -61,27 +61,27 @@ public class GameScreen implements Screen {
 
         if(level!=0){
             // following are the birds
-        stage.getBatch().draw(new Texture(bird1.getTexture()), 430, 500,bird1.width ,bird1.height );
-        stage.getBatch().draw(new Texture(bird2.getTexture()), 200, 330,bird2.width ,bird2.height );
-        stage.getBatch().draw(new Texture(bird3.getTexture()), 300, 330,bird3.width ,bird3.height );
-        // following are the blocks and pigs
-        stage.getBatch().draw(new Texture(block1.getTexture()), 1000, 330,block1.width ,block1.height );
-        stage.getBatch().draw(new Texture(block1.getTexture()), 1050, 330,block1.width ,block1.height );
-        stage.getBatch().draw(new Texture(block1.getTexture()), 1100, 330,block1.width ,block1.height );
-        stage.getBatch().draw(new Texture(block1.getTexture()), 1150, 330,block1.width ,block1.height );
-        stage.getBatch().draw(new Texture(block2.getTexture()), 1200, 330,block2.width ,block2.height );
-        stage.getBatch().draw(new Texture(block2.getTexture()), 1250, 330,block2.width ,block2.height );
-        stage.getBatch().draw(new Texture(block2.getTexture()), 1300, 330,block2.width ,block2.height );
-        stage.getBatch().draw(new Texture(block3.getTexture()), 1350, 330,block3.width ,block3.height );
-        stage.getBatch().draw(new Texture(block3.getTexture()), 1400, 330,block3.width ,block3.height );
-        stage.getBatch().draw(new Texture(block3.getTexture()), 1450, 330,block3.width ,block3.height );
-        stage.getBatch().draw(new Texture(pig1.getTexture()), 1000, 330+50,pig1.width ,pig1.height );
-        stage.getBatch().draw(new Texture(block3.getTexture()), 1100, 330+50,block3.width ,block3.height );
-        stage.getBatch().draw(new Texture(pig2.getTexture()), 1100, 330+100,pig2.width ,pig2.height );
-        stage.getBatch().draw(new Texture(pig3.getTexture()), 1200, 330+50,pig3.width ,pig3.height );
-        stage.getBatch().draw(new Texture(block1.getTexture()), 1300, 330,block1.width ,block1.height );
-        stage.getBatch().draw(new Texture(block2.getTexture()), 1400, 330,block2.width ,block2.height );
-        stage.getBatch().draw(new Texture(block3.getTexture()), 1500, 330,block3.width ,block3.height );
+            stage.getBatch().draw(new Texture(bird1.getTexture()), 430, 500,bird1.width ,bird1.height );
+            stage.getBatch().draw(new Texture(bird2.getTexture()), 200, 330,bird2.width ,bird2.height );
+            stage.getBatch().draw(new Texture(bird3.getTexture()), 300, 330,bird3.width ,bird3.height );
+            // following are the blocks and pigs
+            stage.getBatch().draw(new Texture(block1.getTexture()), 1000, 330,block1.width ,block1.height );
+            stage.getBatch().draw(new Texture(block1.getTexture()), 1050, 330,block1.width ,block1.height );
+            stage.getBatch().draw(new Texture(block1.getTexture()), 1100, 330,block1.width ,block1.height );
+            stage.getBatch().draw(new Texture(block1.getTexture()), 1150, 330,block1.width ,block1.height );
+            stage.getBatch().draw(new Texture(block2.getTexture()), 1200, 330,block2.width ,block2.height );
+            stage.getBatch().draw(new Texture(block2.getTexture()), 1250, 330,block2.width ,block2.height );
+            stage.getBatch().draw(new Texture(block2.getTexture()), 1300, 330,block2.width ,block2.height );
+            stage.getBatch().draw(new Texture(block3.getTexture()), 1350, 330,block3.width ,block3.height );
+            stage.getBatch().draw(new Texture(block3.getTexture()), 1400, 330,block3.width ,block3.height );
+            stage.getBatch().draw(new Texture(block3.getTexture()), 1450, 330,block3.width ,block3.height );
+            stage.getBatch().draw(new Texture(pig1.getTexture()), 1000, 330+50,pig1.width ,pig1.height );
+            stage.getBatch().draw(new Texture(block3.getTexture()), 1100, 330+50,block3.width ,block3.height );
+            stage.getBatch().draw(new Texture(pig2.getTexture()), 1100, 330+100,pig2.width ,pig2.height );
+            stage.getBatch().draw(new Texture(pig3.getTexture()), 1200, 330+50,pig3.width ,pig3.height );
+            stage.getBatch().draw(new Texture(block1.getTexture()), 1300, 330,block1.width ,block1.height );
+            stage.getBatch().draw(new Texture(block2.getTexture()), 1400, 330,block2.width ,block2.height );
+            stage.getBatch().draw(new Texture(block3.getTexture()), 1500, 330,block3.width ,block3.height );
 
         }
     }
@@ -97,6 +97,8 @@ public class GameScreen implements Screen {
         stage.draw();
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         stage.getBatch().begin();
+        double ratioX = Gdx.graphics.getWidth() / 1920.0;
+        double ratioY = Gdx.graphics.getHeight() / 1080.0;
         renderlevel(level);
         stage.getBatch().draw(pause, 50, stage.getHeight()-150,100 ,100 );
 
@@ -104,12 +106,12 @@ public class GameScreen implements Screen {
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
 //  If the screen is touched, the game will go to the EndScreen
-        if (x< stage.getWidth()/10 && Gdx.input.justTouched() && y > 500){
+        if (x < 100*ratioX && Gdx.input.justTouched() && y > 500* ratioY){
             game.setScreen(new EndScreen(game,this.level,1));
-        }else if( x > stage.getWidth()*0.9f && Gdx.input.justTouched() && y > 500){
+        }else if( x > 1500*ratioX && Gdx.input.justTouched() && y > 500*ratioY){
             game.setScreen(new EndScreen(game,this.level,0 ));
         }
-        if (x > 50 && x < 150 && y < 150  && y > 50){
+        if (x > 50*ratioX && x < 150*ratioX && y < 150*ratioY  && y > 50*ratioY){
             if (Gdx.input.justTouched()){
                 game.setScreen(new PauseScreen(game,this.level));
             }
@@ -119,8 +121,7 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void resize(int i, int i1) {
-
+    public void resize(int width, int height) {
     }
 
     @Override
@@ -137,6 +138,7 @@ public class GameScreen implements Screen {
     public void hide() {
 
     }
+
 
     @Override
     public void dispose() {

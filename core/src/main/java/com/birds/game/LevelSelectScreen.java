@@ -5,10 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-
-import java.util.logging.Level;
 
 public class LevelSelectScreen implements Screen {
     private AngryBirds1 game;
@@ -19,9 +16,10 @@ public class LevelSelectScreen implements Screen {
     private Texture level3;
     private Texture level4;
     private Texture level5;
-    public LevelSelectScreen(AngryBirds1 game){
+
+    public LevelSelectScreen(AngryBirds1 game) {
         this.game = game;
-        stage =  new Stage(new StretchViewport(1920,1080));
+        stage = new Stage(new StretchViewport(1920, 1080));
         background = new Texture("background.jpg");
         level1 = new Texture("l1.jpg");
         level2 = new Texture("l2.jpg");
@@ -31,9 +29,7 @@ public class LevelSelectScreen implements Screen {
     }
 
     @Override
-    public void show() {
-
-    }
+    public void show() {}
 
     @Override
     public void render(float v) {
@@ -43,65 +39,56 @@ public class LevelSelectScreen implements Screen {
         stage.getBatch().begin();
 
         stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
-        stage.getBatch().draw(level1, 300, 800,100 ,100 );
-        stage.getBatch().draw(level2, 450, 800,100 ,100 );
-        stage.getBatch().draw(level3, 600, 800,100 ,100 );
-        stage.getBatch().draw(level4, 750, 800,100 ,100 );
-        stage.getBatch().draw(level5, 900, 800,100 ,100 );
+        stage.getBatch().draw(level1, 300, 800, 100, 100);
+        stage.getBatch().draw(level2, 450, 800, 100, 100);
+        stage.getBatch().draw(level3, 600, 800, 100, 100);
+        stage.getBatch().draw(level4, 750, 800, 100, 100);
+        stage.getBatch().draw(level5, 900, 800, 100, 100);
         stage.getBatch().end();
+
+        double ratioX = Gdx.graphics.getWidth() / 1920.0;
+        double ratioY = Gdx.graphics.getHeight() / 1080.0;
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
         int height = Gdx.graphics.getHeight();
-        // Taking input for open levels
 
-        if (x > 300 && x < 400 && y < height - 800  && y > height - 900){
-            level1 = new Texture("l2.jpg");
-            if (Gdx.input.justTouched()){
-                game.setScreen(new GameScreen(game,1));
+        if (x > 300 * ratioX && x < 400 * ratioX && y < height - 800 * ratioY && y > height - 900 * ratioY) {
+            if (Gdx.input.justTouched()) {
+                game.setScreen(new GameScreen(game, 1));
             }
         }
-        if (x > 450 && x < 550 && y < height - 800  && y > height - 900){
-            if (Gdx.input.justTouched()){
-                game.setScreen(new GameScreen(game,2));
+        if (x > 450 * ratioX && x < 550 * ratioX && y < height - 800 * ratioY && y > height - 900 * ratioY) {
+            if (Gdx.input.justTouched()) {
+                game.setScreen(new GameScreen(game, 2));
             }
         }
-        if (x > 600 && x < 700 && y < height - 800  && y > height - 900){
-            if (Gdx.input.justTouched()){
-                game.setScreen(new GameScreen(game,3));
+        if (x > 600 * ratioX && x < 700 * ratioX && y < height - 800 * ratioY && y > height - 900 * ratioY) {
+            if (Gdx.input.justTouched()) {
+                game.setScreen(new GameScreen(game, 3));
             }
         }
-
     }
 
     @Override
-    public void resize(int i, int i1) {
-
-    }
+    public void resize(int i, int i1) {}
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() {}
 
     @Override
     public void dispose() {
         stage.dispose();
         background.dispose();
-        level3.dispose();
         level1.dispose();
         level2.dispose();
+        level3.dispose();
         level4.dispose();
         level5.dispose();
-
     }
 }
