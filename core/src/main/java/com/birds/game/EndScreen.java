@@ -2,127 +2,154 @@ package com.birds.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class EndScreen implements Screen {
     private AngryBirds1 game;
+    private Level levelInstance;
+    private BitmapFont font;
+    private SpriteBatch batch;
     private Stage stage;
-    private int level = 0;
-    private int state = 0;
+    private int levelNumber;
+    private int state;
     private Texture background;
     private Texture message;
     private Texture menu;
     private Texture retry;
     private Texture nextlevel;
-    public EndScreen(AngryBirds1 game,int level,int state){
+
+    public EndScreen(AngryBirds1 game, int levelNumber, int state, Level levelInstance) {
         this.game = game;
-        this.level = level;
+        this.levelNumber = levelNumber;
+        this.levelInstance = levelInstance;
+        font = new BitmapFont();
+        font.getData().setScale(2);
+        font.setColor(Color.BLACK);
+        batch = new SpriteBatch();
         this.state = state;
-        stage =  new Stage(new StretchViewport(1920,1080));
+        stage = new Stage(new StretchViewport(1920, 1080));
         background = new Texture("background.jpg");
         menu = new Texture("menu.png");
         retry = new Texture("retry.png");
         nextlevel = new Texture("nextlevel.png");
 
-//        message = new Texture("lose.jpg");
-    }
-    @Override
-    public void show() {
-        if (state == 1){
+        Image backgroundImage = new Image(background);
+        backgroundImage.setSize(stage.getWidth(), stage.getHeight());
+        stage.addActor(backgroundImage);
+
+        if (state == 1) {
             message = new Texture("win.png");
-        }else{
+            createButton(retry, 700, 280, "restart");
+            createButton(menu, 900, 280, "menu");
+            createButton(nextlevel, 1100, 280, "nextlevel");
+        } else {
             message = new Texture("lose.png");
+            createButton(retry, 800, 280, "restart");
+            createButton(menu, 1000, 280, "menu");
         }
 
+        Image messageImage = new Image(message);
+        messageImage.setSize(900, 200);
+        messageImage.setPosition(500, 600);
+        stage.addActor(messageImage);
+    }
+
+    private void createButton(Texture texture, float x, float y, final String action) {
+        Button button = new Button(new TextureRegionDrawable(new TextureRegion(texture)));
+        button.setPosition(x, y);
+        button.setSize(150, 150);
+        button.setTouchable(Touchable.enabled);
+        button.setOrigin(button.getWidth() / 2, button.getHeight() / 2);
+        button.setTransform(true);
+
+        button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                button.addAction(Actions.sequence(
+                    Actions.scaleTo(0.9f, 0.9f, 0.05f),
+                    Actions.scaleTo(1f, 1f, 0.05f)
+                ));
+                switch (action) {
+                    case "restart":
+                        game.setScreen(new GameScreen(game, levelNumber));
+                        break;
+                    case "menu":
+                        game.setScreen(new LevelSelectScreen(game));
+                        break;
+                    case "nextlevel":
+                        if (levelNumber == LevelManager.levels.size()) {
+                            game.setScreen(new LevelSelectScreen(game));
+                            break;
+                        }
+                        game.setScreen(new GameScreen(game, levelNumber + 1));
+                        break;
+                }
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                button.addAction(Actions.scaleTo(1.2f, 1.2f, 0.1f)); // Increase size on hover
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                button.addAction(Actions.scaleTo(1.0f, 1.0f, 0.1f)); // Reset size when not hovering
+            }
+        });
+
+        stage.addActor(button);
+    }
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
+        Level orglevel = AngryBirds1.levelManager.getLevel(levelNumber);
+        System.out.println("Level: " + levelNumber + " State: " + state);
+        if (state == 1) { // Win condition
+            orglevel.setWin(true);
+            AngryBirds1.levelManager.unlockLevel(levelNumber + 1);
+        }
+        AngryBirds1.levelManager.updateLevel(levelInstance);
     }
 
     @Override
     public void render(float v) {
-        stage.act();
-        stage.draw();
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        stage.getBatch().begin();
-
-        stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
-        stage.getBatch().draw(message, 480, 600,1000 ,150 );
-        if (state == 1){
-            stage.getBatch().draw(menu, 650, 300,150 ,150 );
-            stage.getBatch().draw(retry, 900, 300, 150 ,150 );
-            stage.getBatch().draw(nextlevel, 1150, 300, 150 ,150 );
-
-        }else{
-            stage.getBatch().draw(menu, 800, 300,150 ,150 );
-            stage.getBatch().draw(retry, 1000, 300, 150 ,150 );
-        }
-        stage.getBatch().end();
-
-        //Go to LevelSelectScreen if just touched on the menu button
-        double ratioX = Gdx.graphics.getWidth() / 1920.0;
-        double ratioY = Gdx.graphics.getHeight() / 1080.0;
-        int x = Gdx.input.getX();
-        int y = Gdx.graphics.getHeight() - Gdx.input.getY();
-        if(state == 1){
-            if (Gdx.input.justTouched()) {
-                System.out.println("x: " + x + " y: " + y);
-                //clickable regions in this screen
-                System.out.println("Menu: " + 650 * ratioX + " " + 800 * ratioX + " " + 300 * ratioY + " " + 450 * ratioY);
-                System.out.println("Retry: " + 900 * ratioX + " " + 1050 * ratioX + " " + 300 * ratioY + " " + 450 * ratioY);
-                System.out.println("Next Level: " + 1150 * ratioX + " " + 1300 * ratioX + " " + 300 * ratioY + " " + 450 * ratioY);
-
-                if (x > 650 * ratioX && x < 800 * ratioX && y > 300 * ratioY && y < 450 * ratioY) {
-                    System.out.println("Menu");
-                    game.setScreen(new LevelSelectScreen(game));
-
-                }
-                if (x > 900 * ratioX && x < 1050 * ratioX && y > 300 * ratioY && y < 450 * ratioY) {
-                    game.setScreen(new GameScreen(game, level));
-
-                }
-                //Go to GameScreen if just touched on the next level button
-                if (x > 1150 * ratioX && x < 1300 * ratioX && y > 300 * ratioY && y < 450 * ratioY) {
-                    game.setScreen(new GameScreen(game, level + 1));
-                }
-            }
-        }else {
-            if (Gdx.input.justTouched()) {
-                System.out.println("x: " + x + " y: " + y);
-                //clickable regions in this screen
-                System.out.println("Menu: " + 800 * ratioX + " " + 950 * ratioX + " " + 300 * ratioY + " " + 450 * ratioY);
-                System.out.println("Retry: " + 1000 * ratioX + " " + 1150 * ratioX + " " + 300 * ratioY + " " + 450 * ratioY);
-
-                if (x > 800 * ratioX && x < 900 * ratioX && y > 300 * ratioY && y < 450 * ratioY) {
-                    game.setScreen(new LevelSelectScreen(game));
-                }
-                //Go to GameScreen if just touched on the retry button
-                if (x > 1000 * ratioX && x < 1100 * ratioX && y > 300 * ratioY && y < 450 * ratioY) {
-                    game.setScreen(new GameScreen(game, level));
-                }
-            }
-        }
+        Level level = AngryBirds1.levelManager.getLevel(levelNumber);
+        stage.act(v);
+        stage.draw();
+        batch.begin();
+        font.draw(batch, "Best Score: " + level.getScore(), 500, 400); // Draw variable value
+        font.draw(batch, "Current Score: " + levelInstance.getScore(), 900, 400); // Draw variable value
+        batch.end();
     }
 
     @Override
-    public void resize(int i, int i1) {
-
-    }
+    public void resize(int i, int i1) {}
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() {}
 
     @Override
     public void dispose() {
