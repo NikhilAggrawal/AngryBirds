@@ -3,67 +3,96 @@ package com.birds.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-
-import static com.badlogic.gdx.utils.Align.center;
 
 public class HomeScreen implements Screen {
     private AngryBirds1 game;
     private Stage stage;
-    private Texture background;
-    private Texture theme;
-    private Texture playButton;
-    private Texture ground;
-//    private Texture exitButton;
+    private Texture backgroundTexture;
+    private Texture groundTexture;
+    private Texture playButtonTexture;
 
     public HomeScreen(AngryBirds1 game) {
         this.game = game;
-        stage =  new Stage(new FitViewport(1920,1080));
-        background = new Texture("background.jpg");
-        theme = new Texture("theme.png");
-        playButton = new Texture("playButton.png");
-        ground = new Texture("ground.png");
+        stage = new Stage(new FitViewport(1920, 1080));
+        Gdx.input.setInputProcessor(stage);
+        stage.setDebugAll(true);
+
+        // Load textures
+        backgroundTexture = new Texture("background.jpg");
+        groundTexture = new Texture("ground.png");
+        playButtonTexture = new Texture("playButton.png");
+
+        // Create and add background and ground images
+        Image backgroundImage = new Image(backgroundTexture);
+        Image groundImage = new Image(groundTexture);
+        backgroundImage.setSize(stage.getWidth(), stage.getHeight());
+        groundImage.setSize(stage.getWidth(), 330);
+        stage.addActor(backgroundImage);
+        stage.addActor(groundImage);
+
+        // Create the play button
+        Button playButton = new Button(new TextureRegionDrawable(new TextureRegion(playButtonTexture)));
+        playButton.setPosition(780, 280);
+        playButton.setSize(350, 180);
+        playButton.setTouchable(Touchable.enabled);
+        playButton.setOrigin(playButton.getWidth() / 2, playButton.getHeight() / 2);
+        playButton.setTransform(true);
+//        playButton.addAction(Actions.scaleTo(6.9f, 1.9f));
+
+        // Add hover and click effects
+        playButton.addListener(new ClickListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                System.out.println("Mouse entered");
+                playButton.addAction(Actions.scaleTo(1.2f, 1.2f, 0.1f));
+                System.out.println("Mouse entered");
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                System.out.println("Mouse exited");
+                playButton.addAction(Actions.scaleTo(1.0f, 1.0f, 0.1f));
+                System.out.println("Mouse exited");
+            }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                playButton.addAction(Actions.sequence(
+                    Actions.scaleTo(0.9f, 0.9f, 0.05f),
+                    Actions.scaleTo(1f, 1f, 0.05f)
+                ));
+                game.setScreen(new LevelSelectScreen(game));
+            }
+        });
+
+        stage.addActor(playButton);
     }
 
     @Override
-    public void show() {}
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
+    }
 
     @Override
     public void render(float delta) {
-        Gdx.input.setInputProcessor(stage);
-        stage.act();
-        stage.draw();
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        stage.getBatch().begin();
-        double ratioX = Gdx.graphics.getWidth() / 1920.0;
-        double ratioY = Gdx.graphics.getHeight() / 1080.0;
-        stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
-        stage.getBatch().draw(ground, 0, 0, stage.getWidth(), 330);
-        stage.getBatch().draw(theme, 640, 250, 640, 480);
-        stage.getBatch().draw(playButton, 780, 280, 350, 180);
-
-
-        stage.getBatch().end();
-
-        if (Gdx.input.justTouched()) {
-            int x = Gdx.input.getX();
-            int y = Gdx.graphics.getHeight() -  Gdx.input.getY();
-
-            // If the play button is clicked, go to the level select screen
-            if (x > 780*ratioX && x < (780 + 350)*ratioX &&
-                y > 280*ratioY && y < (280 + 180)*ratioY) {
-                System.out.println("Play button clicked");
-                game.setScreen(new LevelSelectScreen(game));
-            }
-        }
+        stage.act(delta);
+        stage.draw();
     }
-
 
     @Override
     public void resize(int width, int height) {
@@ -82,9 +111,8 @@ public class HomeScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        background.dispose();
-        theme.dispose();
-        playButton.dispose();
-//        exitButton.dispose();
+        backgroundTexture.dispose();
+        groundTexture.dispose();
+        playButtonTexture.dispose();
     }
 }

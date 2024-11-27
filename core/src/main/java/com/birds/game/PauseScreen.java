@@ -3,111 +3,129 @@ package com.birds.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-//add play button, restart, and menu button
+
+import java.io.*;
+
 public class PauseScreen implements Screen {
     private AngryBirds1 game;
     private Stage stage;
     private Texture background;
-    private int level;
     private Texture resume;
     private Texture restart;
     private Texture menu;
     private Texture message;
-    public PauseScreen(AngryBirds1 game,int level){
+    private GameScreen gameScreen;
+
+    public PauseScreen(AngryBirds1 game, GameScreen gameScreen) {
         this.game = game;
-        this.level = level;
-        stage =  new Stage(new StretchViewport(1920,1080));
+        this.gameScreen = gameScreen;
+        stage = new Stage(new StretchViewport(1920, 1080));
         background = new Texture("background.jpg");
         resume = new Texture("resume.png");
         restart = new Texture("retry.png");
         menu = new Texture("menu.png");
         message = new Texture("paused.png");
+
+        // Create and add background image
+        Image backgroundImage = new Image(background);
+        backgroundImage.setSize(stage.getWidth(), stage.getHeight());
+        stage.addActor(backgroundImage);
+
+        // Create buttons
+        createButton(resume, 700, "resume");
+        createButton(restart, 900, "restart");
+        createButton(menu, 1100, "menu");
+
+        // Add message image
+        Image messageImage = new Image(message);
+        messageImage.setPosition(500, 600);
+        messageImage.setSize(900, 200);
+        stage.addActor(messageImage);
     }
 
+    private void createButton(Texture texture, float x, final String action) {
+        Button button = new Button(new TextureRegionDrawable(new TextureRegion(texture)));
+        button.setPosition(x, 280);
+        button.setSize(150, 150);
+        button.setTouchable(Touchable.enabled);
+        button.setOrigin(button.getWidth() / 2, button.getHeight() / 2);
+        button.setTransform(true);
+
+        button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                button.addAction(Actions.sequence(
+                    Actions.scaleTo(0.9f, 0.9f, 0.05f),
+                    Actions.scaleTo(1f, 1f, 0.05f)
+                ));
+                switch (action) {
+                    case "resume":
+                        game.setScreen(gameScreen);
+                        gameScreen.togglePause(); // Resume the game
+                        break;
+                    case "restart":
+                        game.setScreen(new GameScreen(game, gameScreen.level));
+                        break;
+                    case "menu":
+                        game.saveLevel(gameScreen);
+                        System.out.println("Game saved");
+                        game.setScreen(new LevelSelectScreen(game));
+                        break;
+                }
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                button.addAction(Actions.scaleTo(1.2f, 1.2f, 0.1f)); // Increase size on hover
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                button.addAction(Actions.scaleTo(1.0f, 1.0f, 0.1f)); // Reset size when not hovering
+            }
+        });
+
+        stage.addActor(button);
+    }
 
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta) {
+        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         stage.act();
         stage.draw();
-
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-
-        stage.getBatch().begin();
-
-        stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
-        stage.getBatch().draw(resume, 700, 280, 150, 150);
-        stage.getBatch().draw(restart, 900, 280, 150, 150);
-        stage.getBatch().draw(menu, 1100, 280, 150, 150);
-        stage.getBatch().draw(message, 500, 600,900 ,200 );
-        stage.getBatch().end();
-
-        double ratioX = Gdx.graphics.getWidth() / 1920.0;
-        double ratioY = Gdx.graphics.getHeight() / 1080.0;
-        int x = Gdx.input.getX();
-        int y = Gdx.graphics.getHeight() - Gdx.input.getY();
-        //If the resume button is clicked, the game will go back to the GameScreen
-        if (x > 700*ratioX && x < 850*ratioX && y > 280*ratioY  && y < 430*ratioY){
-            if (Gdx.input.justTouched()){
-                System.out.println("Resume");
-                game.setScreen(new GameScreen(game,level));
-            }
-        }
-//        // If screen is clicked it will show the coordinates of the click and the clickable regions of the screen also gdxgraphic width and height
-//        if (Gdx.input.justTouched()){
-//            System.out.println("X: " + x + " Y: " + y);
-//            System.out.println("Gdx.graphics - Width: " + Gdx.graphics.getWidth() + ", Height: " + Gdx.graphics.getHeight());
-//            System.out.println("Resume: " + 700*ratioX + " " + 850*ratioX + " " + 280*ratioY + " " + 430*ratioY);
-//            System.out.println("Restart: " + 900*ratioX + " " + 1050*ratioX + " " + 280*ratioY + " " + 430*ratioY);
-//            System.out.println("Menu: " + 1100*ratioX + " " + 1250*ratioX + " " + 280*ratioY + " " + 430*ratioY);
-//
-//        }
-
-        //If the restart button is clicked, the game will restart the current level
-        if (x > 900*ratioX && x < 1050*ratioX && y > 280*ratioY  && y < 430*ratioY){
-            if (Gdx.input.justTouched()){
-                System.out.println("Restart");
-                game.setScreen(new GameScreen(game,level));
-            }
-        }
-        //If the menu button is clicked, the game will go back to the LevelSelectScreen
-        if (x > 1100*ratioX && x < 1250*ratioX && y >280*ratioY  && y < 430*ratioY){
-            if (Gdx.input.justTouched()){
-                System.out.println("Menu");
-                game.setScreen(new LevelSelectScreen(game));
-            }
-        }
     }
 
     @Override
-    public void resize(int i, int i1) {
-
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() {}
 
     @Override
     public void dispose() {
@@ -116,6 +134,6 @@ public class PauseScreen implements Screen {
         resume.dispose();
         restart.dispose();
         menu.dispose();
-
+        message.dispose();
     }
 }
