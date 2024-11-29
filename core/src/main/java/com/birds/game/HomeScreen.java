@@ -34,7 +34,7 @@ public class HomeScreen implements Screen {
 //        stage.setDebugAll(true);
 
         // Load textures
-        backgroundTexture = new Texture("background.jpg");
+        backgroundTexture = new Texture("homepage.png");
         playButtonTexture = new Texture("playButton.png");
 
 
