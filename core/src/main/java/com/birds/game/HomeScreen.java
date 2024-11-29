@@ -25,6 +25,7 @@ public class HomeScreen implements Screen {
     private AngryBirds1 game;
     private Stage stage;
     private Texture backgroundTexture;
+    private Texture groundTexture;
     private Texture playButtonTexture;
     public HomeScreen(AngryBirds1 game) {
         this.game = game;
@@ -45,8 +46,8 @@ public class HomeScreen implements Screen {
 
         // Create the play button
         Button playButton = new Button(new TextureRegionDrawable(new TextureRegion(playButtonTexture)));
-        playButton.setPosition(780, 280);
-        playButton.setSize(350, 180);
+        playButton.setPosition(800, 90);
+        playButton.setSize(250, 150);
         playButton.setTouchable(Touchable.enabled);
         playButton.setOrigin(playButton.getWidth() / 2, playButton.getHeight() / 2);
         playButton.setTransform(true);
