@@ -24,18 +24,13 @@ public class LevelSelectScreen implements Screen {
     private Texture background;
     List<Texture> levelTextures;
     private Texture savedGame;
-//    private Texture level1;
-//    private Texture level2;
-//    private Texture level3;
-//    private Texture level4;
-//    private Texture level5;
 
     public LevelSelectScreen(AngryBirds1 game) {
         this.game = game;
         stage = new Stage(new StretchViewport(1920, 1080));
         background = new Texture("background.jpg");
         levelTextures = new ArrayList<>();
-        savedGame = new Texture("lockedlevel.jpg");
+        savedGame = new Texture("savedlevel.png");
         //depending on if the level is locked or unlocked, the texture will be different
         for (Level level : LevelManager.levels) {
             if (level.getLocked()) {
@@ -83,6 +78,9 @@ public class LevelSelectScreen implements Screen {
         Button button = new Button(new TextureRegionDrawable(new TextureRegion(texture)));
         button.setPosition(x, y);
         button.setSize(100, 100);
+        if (level == 99) {
+            button.setSize(300, 100);
+        }
         button.setTouchable(Touchable.enabled);
         button.setOrigin(button.getWidth() / 2, button.getHeight() / 2);
         button.setTransform(true);

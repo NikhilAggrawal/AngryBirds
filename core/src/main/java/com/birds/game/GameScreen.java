@@ -138,7 +138,7 @@ public class GameScreen extends InputAdapter implements Screen, Serializable {
         background = new Texture("background.jpg");
         slingshot = new Texture("sling.png");
         ground = new Texture("ground.png");
-        arrow = new Texture("lockedlevel.jpg");
+        arrow = new Texture("Arrow.png");
 
         // Create ground body
         BodyDef groundBodyDef = new BodyDef();
@@ -289,7 +289,7 @@ public class GameScreen extends InputAdapter implements Screen, Serializable {
         batch.draw(ground, 0, 0, stage.getWidth(), 330);
         batch.draw(slingshot, 380, 330, 100, 200);
         if (showArrow) {
-            batch.draw(arrow, 430, 500, 0, 5, 100, 10, 1, 1, arrowRotation, 0, 0, arrow.getWidth(), arrow.getHeight(), false, false);
+            batch.draw(arrow, 430, 500, 0, 5, 120, 40, 1, 1, arrowRotation, 0, 0, arrow.getWidth(), arrow.getHeight(), false, false);
         }
 //        batch.draw(levelInstance.birdList.get(0).getTexture(), levelInstance.birdList.get(0).getX(), levelInstance.birdList.get(0).getY(), 50, 50);
         for (Bird bird : levelInstance.birdList) {

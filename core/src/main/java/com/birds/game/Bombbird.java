@@ -28,7 +28,7 @@ public class Bombbird extends Bird
         float blastRadius = 200;
 
         for (Pig pig : level.pigList) {
-            Vector2 pigPosition = new Vector2(pig.getX(), pig.getY());
+            Vector2 pigPosition = new Vector2(pig.body.getPosition().x, pig.body.getPosition().y);
             float distance = blastCenter.dst(pigPosition);
             if (distance < blastRadius) {
                 level.setScore(level.getScore() + 500);
@@ -37,7 +37,7 @@ public class Bombbird extends Bird
         }
 
         for (Block block : level.blockList) {
-            Vector2 blockPosition = new Vector2(block.getX(), block.getY());
+            Vector2 blockPosition = new Vector2(block.body.getPosition().x, block.body.getPosition().y);
             float distance = blastCenter.dst(blockPosition);
             if (distance < blastRadius) {
                 level.setScore(level.getScore() + 100);

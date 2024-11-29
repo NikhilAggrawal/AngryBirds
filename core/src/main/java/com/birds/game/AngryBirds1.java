@@ -1,6 +1,8 @@
 package com.birds.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 
 import java.io.*;
 
@@ -9,6 +11,18 @@ import java.io.*;
 public class AngryBirds1 extends Game {
     public static LevelManager levelManager;
     public static GameScreen tempScreen;
+    private Music backgroundMusic;
+//    private static int test;
+
+//    public AngryBirds1(int test) {
+//        // This constructor is used for testing purposes
+//        AngryBirds1.test = test;
+//    }
+//
+//    public AngryBirds1() {
+//        // This constructor is used for testing purposes
+//        AngryBirds1.test = 0;
+//    }
 
     public void saveGame() {
         try (FileOutputStream fileOut = new FileOutputStream("gameData.ser");
@@ -56,7 +70,19 @@ public class AngryBirds1 extends Game {
     public void create() {
         levelManager = new LevelManager();
         loadGame();
+//        if (test == 0){
+//            backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("backmusic.mp3"));
+//            backgroundMusic.setLooping(true);
+//            backgroundMusic.setVolume(0.1f);
+//            backgroundMusic.play();
+//            this.setScreen(new HomeScreen(this));
+//        }
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("backmusic.mp3"));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.1f);
+        backgroundMusic.play();
         this.setScreen(new HomeScreen(this));
+
     }
 
     @Override
@@ -67,6 +93,7 @@ public class AngryBirds1 extends Game {
     @Override
     public void dispose() {
         // Save game data when the game is disposed
+        backgroundMusic.dispose();
         saveGame();
         super.dispose();
     }
