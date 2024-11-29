@@ -11,7 +11,8 @@ import java.io.*;
 public class AngryBirds1 extends Game {
     public static LevelManager levelManager;
     public static GameScreen tempScreen;
-    private Music backgroundMusic;
+    public static boolean soundOn;
+    Music backgroundMusic;
 //    private static int test;
 
 //    public AngryBirds1(int test) {

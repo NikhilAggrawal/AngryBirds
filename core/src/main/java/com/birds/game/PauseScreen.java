@@ -53,6 +53,49 @@ public class PauseScreen implements Screen {
         messageImage.setPosition(500, 600);
         messageImage.setSize(900, 200);
         stage.addActor(messageImage);
+
+
+        Button soundbutton = new Button(new TextureRegionDrawable(new TextureRegion(new Texture("soundon.png"))));
+        soundbutton.setPosition(stage.getWidth() - 100, stage.getHeight() - 100);
+        soundbutton.setSize(100, 100);
+        soundbutton.setTouchable(Touchable.enabled);
+        soundbutton.setOrigin(soundbutton.getWidth() / 2, soundbutton.getHeight() / 2);
+        soundbutton.setTransform(true);
+
+        soundbutton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                soundbutton.addAction(Actions.sequence(
+                    Actions.scaleTo(0.9f, 0.9f, 0.05f),
+                    Actions.scaleTo(1f, 1f, 0.05f)
+                ));
+                // Start the game screen with the selected level if level is unlocked
+                if (AngryBirds1.soundOn) {
+                    AngryBirds1.soundOn = false;
+                    game.backgroundMusic.stop();
+                    soundbutton.getStyle().up = new TextureRegionDrawable(new Texture(Gdx.files.internal("soundoff.png")));
+                } else {
+                    AngryBirds1.soundOn = true;
+                    game.backgroundMusic.play();
+                    soundbutton.getStyle().up = new TextureRegionDrawable(new TextureRegion(new Texture("soundon.png")));
+
+
+                }
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, com.badlogic.gdx.scenes.scene2d.Actor fromActor) {
+                soundbutton.addAction(Actions.scaleTo(1.1f, 1.1f, 0.1f));
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, com.badlogic.gdx.scenes.scene2d.Actor toActor) {
+                soundbutton.addAction(Actions.scaleTo(1f, 1f, 0.1f));
+            }
+        });
+
+        stage.addActor(soundbutton);
+
     }
 
     private void createButton(Texture texture, float x, final String action) {
