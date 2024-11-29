@@ -13,17 +13,6 @@ public class Bombbird extends Bird
         //This function will explode
         //It will destroy all the pigs within a certain radius
         //It will also destroy itself
-
-        //Destroy all the pigs within a certain radius
-        //For each pig in the level
-        //If the distance between the pig and the bomb is less than the radius
-        //Destroy the pig
-        //Remove the pig from the pig list
-
-        //Destroy itself
-        //Remove itself from the bird list
-        //
-
         Vector2 blastCenter = new Vector2(getBody().getPosition().x, getBody().getPosition().y);
         float blastRadius = 200;
 
