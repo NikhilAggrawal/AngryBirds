@@ -31,3 +31,77 @@ Useful Gradle tasks and flags:
 
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
+
+
+
+
+# Angry Birds Game
+
+This is a Java-based Angry Birds game developed using LibGDX.
+
+## Prerequisites
+
+- Java Development Kit (JDK) 8 or higher
+- Gradle
+- IntelliJ IDEA (recommended)
+
+## Setup
+
+1. **Clone the repository:**
+
+    ```sh
+    git clone https://github.com/NikhilAggrawal/angry-birds-game.git
+    cd angry-birds-game
+    ```
+
+2. **Import the project into IntelliJ IDEA:**
+
+    - Open IntelliJ IDEA.
+    - Select `File` > `Open...`.
+    - Navigate to the cloned repository and select the `build.gradle` file.
+    - Click `OK` to import the project.
+
+3. **Build the project:**
+
+    ```sh
+    ./gradlew build
+    ```
+
+## Running the Game
+
+1. **Run the game from IntelliJ IDEA:**
+
+    - Open the `AngryBirds1.java` file.
+    - Right-click on the file and select `Run 'AngryBirds1.main()'`.
+
+2. **Run the game from the command line:**
+
+    ```sh
+    ./gradlew desktop:run
+    ```
+
+## Testing
+
+1. **Run tests from IntelliJ IDEA:**
+
+    - Open the `LevelTest.java` file.
+    - Right-click on the file and select `Run 'LevelTest'`.
+
+2. **Run tests from the command line:**
+
+    ```sh
+    ./gradlew test
+    ```
+
+## Project Structure
+
+- `core/src/main/java/com/birds/game/` - Main game source code.
+- `core/src/test/java/com/birds/game/` - Test source code.
+- `assets/` - Game assets (images, sounds, etc.).
+
+
+## Online Sources Referred
+- AngryBirds Wiki
+- Figma (Creating Buttons)
+- libGDX
+- Google (for Miscellaneous Questions)
