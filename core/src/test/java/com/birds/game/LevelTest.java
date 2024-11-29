@@ -69,7 +69,7 @@ public class LevelTest {
     @Before
     public void setUp() {
         level = new Level(1);
-        Gdx.files = new MockFiles(); // Initialize with a sample level number
+        Gdx.files = new MockFiles();
     }
 
     @Test

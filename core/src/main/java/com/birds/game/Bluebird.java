@@ -15,8 +15,6 @@ public class Bluebird extends Bird {
     }
 
     public void specialAbility(Level level, World world){
-        //This function will split the blue bird into three birds
-        //Two new birds will be created and added to the world
 
         //Create two new birds
         Bluebird bird1 = new Bluebird();
@@ -41,12 +39,5 @@ public class Bluebird extends Bird {
         //Give them an initial velocity equal to the velocity of the original bird
         bird1.body.setLinearVelocity(body.getLinearVelocity());
         bird2.body.setLinearVelocity(body.getLinearVelocity());
-
-//
-//        //Set the position of the three birds
-//        bird1.setPosition(x, y);
-//        bird2.setPosition(x, y);
-//        bird3.setPosition(x, y);
-//
     }
 }
