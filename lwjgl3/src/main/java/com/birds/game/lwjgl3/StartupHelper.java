@@ -66,7 +66,6 @@ public class StartupHelper {
      *         in this one
      */
     public static boolean startNewJvmIfRequired(boolean redirectOutput) {
-        System.out.println("Fuck");
         String osName = System.getProperty("os.name").toLowerCase();
         if (!osName.contains("mac")) {
             if (osName.contains("windows")) {
