@@ -89,7 +89,7 @@ public class Bird {
     public void update(float delta) {
         float gravity = -20f;
         // if the bird goes off the screen, destroy it
-        if (getBody().getPosition().x > Gdx.graphics.getWidth() || getBody().getPosition().y < 0 || getBody().getPosition().y > Gdx.graphics.getHeight()) {
+        if((getBody().getPosition().x > Gdx.graphics.getWidth() || getBody().getPosition().y < 0 || getBody().getPosition().y > Gdx.graphics.getHeight()) && isReleased()) {
             CollisionListener.bodiesToDestroy.add(this.getBody());
         }
         if (isReleased()) {
