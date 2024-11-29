@@ -231,10 +231,10 @@ public class AngryBirds1 extends Game {
                     if (type == 1){
                         level.blockList.add(new GlassBlock());
                     }
-                    else if (type == 2){
+                    else if (type == 3){
                         level.blockList.add(new WoodBlock());
                     }
-                    else if (type == 3){
+                    else if (type == 2){
                         level.blockList.add(new StoneBlock());
                     }
                     level.blockList.get(i).setPos(Integer.parseInt(block[1]), Integer.parseInt(block[2]));
@@ -254,6 +254,9 @@ public class AngryBirds1 extends Game {
                     }
                     else if (type == 2){
                         level.pigList.add(new ArmorPig());
+                    }
+                    else {
+                        level.pigList.add(new BigPig());
                     }
                     level.pigList.get(i).setPos(Integer.parseInt(pig[1]), Integer.parseInt(pig[2]));
                     level.pigList.get(i).setScale(Integer.parseInt(pig[3]), Integer.parseInt(pig[4]));

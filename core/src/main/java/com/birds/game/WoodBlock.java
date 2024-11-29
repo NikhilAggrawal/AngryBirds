@@ -3,6 +3,6 @@ package com.birds.game;
 public class WoodBlock extends Block
 {
     public WoodBlock(){
-        super(1, "woodblock.png", 20, 50, 50);
+        super(3, "woodblock.png", 20, 50, 50);
     }
 }

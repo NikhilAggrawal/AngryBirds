@@ -304,7 +304,7 @@ public class GameScreen extends InputAdapter implements Screen, Serializable {
 
         batch.end();
 
-        debugRenderer.render(world, stage.getCamera().combined);
+//        debugRenderer.render(world, stage.getCamera().combined);
         // Update the stage
         stage.act(v);
         stage.draw();
